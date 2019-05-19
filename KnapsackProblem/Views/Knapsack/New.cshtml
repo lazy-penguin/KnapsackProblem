@@ -1,0 +1,55 @@
+﻿@model List<KnapsackProblem.Models.Item>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <title>Новая задача</title>
+</head>
+
+<body class="container">
+    <h4 style="color:dimgray;">Для оформления задачи заполните следующие поля:</h4>
+    <form method="post">
+        <h6>Название:</h6>
+        <input type="text" name="Name" class="validate" />
+        <h6>Вместимость рюкзака:</h6>
+        <input type="number" name="MaxValue" class="validate" min="1"/>
+
+        <table class="highlight">
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <tr>
+                    <td>
+                        <h6>@(i + 1)</h6>
+                    </td>
+                    <td>
+                        <h6>Вес:</h6>
+                        <input type="number" name="[@i].Weight" class="validate" size="3" min="0" />
+                    </td>
+                    <td>
+                        <h6>Стоимость:</h6>
+                        <input type="number" name="[@i].Value" class="validate" size="3" min="0" />
+                    </td>
+                </tr>
+
+            }
+        <tr>
+            <td>
+                <input class="waves-effect grey lighten-1 btn-small" type="button" value="Добавить" />
+            </td>
+            <td>
+                <input class="waves-effect grey lighten-1 btn-small" type="button" value="Убрать" />
+            </td>
+        </tr>
+        </table>
+        <br>
+        <input class="waves-effect grey lighten-1 btn-small" type="submit" value="Отправить" />
+        <input class="waves-effect grey lighten-1 btn-small" type="reset">
+    </form>
+</body>
+</html>

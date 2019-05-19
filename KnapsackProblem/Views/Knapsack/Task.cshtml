@@ -1,0 +1,36 @@
+﻿@model IEnumerable<KnapsackProblem.Models.Item>
+@{
+    //ViewData["Title"] = "Список смартфонов";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <title>Задач</title>
+</head>
+<body>
+    <h3 style="color:dimgray;">Задачa "@ViewBag.Task.Name":</h3>
+    <h4 style="color:dimgray;">Условие:</h4>
+    <h6>Вместимость рюкзака: @ViewBag.Task.MaxValue</h6> 
+
+    <h6>Предметы:</h6>
+    <table class="highlight">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <h6>Вес:</h6>
+                    @item.Weight
+                </td>
+                <td>
+                    <h6>Стоимость:</h6>
+                    @item.Value
+                </td>
+            </tr>
+        }
+    </table>
+
+</body>
+</html>

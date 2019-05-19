@@ -1,0 +1,31 @@
+﻿@model IEnumerable<KnapsackProblem.Models.KnapsackTask>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <title>Задачи</title>
+</head>
+<body>
+    <h4 style="color:dimgray;">Задачи:</h4>
+    <table>
+        <tr>
+            <td>Вес</td>
+            <td>Стоимость</td>
+            <td></td>
+        </tr>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>@task.Name</td>
+                <td>@task.MaxValue</td>
+                <td><a href="~/Knapsack/Task/@task.Id">Подробнее</a></td>
+            </tr>
+        }
+    </table>
+</body>
+</html>
