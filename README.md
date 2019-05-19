@@ -1,0 +1,2 @@
+# KnapsackProblem
+project for nsudotnetcore
