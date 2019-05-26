@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KnapsackProblem.Models
+namespace DataManagers
 {
     public class KnapsackTask
     {
@@ -14,18 +14,26 @@ namespace KnapsackProblem.Models
         [Required]
         public string Name { get; set; }
 
-        public int? Percent { get; set; }
+        [Required]
+        public int Percent { get; set; }
 
         [Required]
         public int MaxValue { get; set; }
 
-        public int? Time { get; set; }
+        [Required]
+        public int Time { get; set; }
+
+        [Required]
+        public Boolean Status { get; set; }
 
         [Required]
         public int KnapsackId { get; set; }
-        public Knapsack Knapsack { get; set; }
+        public virtual Knapsack Knapsack { get; set; }
 
-        public ICollection<Item> Items { get; set; }
+        public int? SolveId { get; set; }
+        public virtual Solve Solve { get; set; }
+
+        public virtual ICollection<Item> Items { get; set; }
 
         public KnapsackTask()
         {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KnapsackProblem.Models
+namespace DataManagers
 {
     public class Item
     {
@@ -18,9 +18,9 @@ namespace KnapsackProblem.Models
         public int Value { get; set; }
 
         public int? KnapsackId { get; set; }
-        public Knapsack Knapsack { get; set; }
+        public virtual Knapsack Knapsack { get; set; }
 
-        public int? TaskId { get; set; }
-        public KnapsackTask Task { get; set; }
+        public int? KnapsackTaskId { get; set; }
+        public virtual KnapsackTask KnapsackTask { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<KnapsackProblem.Models.KnapsackTask>
+﻿@model IEnumerable<DataManagers.KnapsackTask>
 @{
     Layout = null;
 }
@@ -11,21 +11,35 @@
     <title>Задачи</title>
 </head>
 <body>
-    <h4 style="color:dimgray;">Задачи:</h4>
+    <h4 style="color:dimgray;">Задачи:</h4><br>
+    <a href="~/Knapsack/New">Новая задача</a><br>
     <table>
         <tr>
-            <td>Вес</td>
-            <td>Стоимость</td>
-            <td></td>
+            <td>Название</td>
+            <td>Максимальная стоимость</td>
+            <td>% выполнения</td>
+            <td>Статус</td>
         </tr>
         @foreach (var task in Model)
         {
             <tr>
                 <td>@task.Name</td>
                 <td>@task.MaxValue</td>
+                <td>@task.Percent</td>
+                @if (task.Status)
+                {
+                    <td>Выполнено</td>
+                }
+                else
+                {
+                    <td>В процессе</td>
+                }
                 <td><a href="~/Knapsack/Task/@task.Id">Подробнее</a></td>
+                <td><a href="~/Knapsack/Stop/@task.Id">Остановить</a></td>
             </tr>
         }
     </table>
+
+
 </body>
 </html>

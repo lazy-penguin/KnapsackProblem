@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using KnapsackProblem.Models;
+using DataManagers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +24,7 @@ namespace KnapsackProblem
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<KnapsackContext>(options => options.UseNpgsql(connection));
+            services.AddDbContext<KnapsackContext>(options => options.UseLazyLoadingProxies().UseNpgsql(connection));
             services.AddMvc();
         }
 
@@ -49,7 +46,7 @@ namespace KnapsackProblem
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Knapsack}/{action=New}/{id?}");
+                    template: "{controller=Knapsack}/{action=Start}/{id?}");
             });
         }
     }

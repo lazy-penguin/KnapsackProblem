@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KnapsackProblem.Models
+namespace DataManagers
 {
     public class Knapsack
     {
@@ -14,9 +14,9 @@ namespace KnapsackProblem.Models
         [Required]
         public int Capacity { get; set; }
 
-        public KnapsackTask Task { get; set; }
+        public virtual KnapsackTask KnapsackTask { get; set; }
 
-        public ICollection<Item> Items { get; set; }
+        public virtual ICollection<Item> Items { get; set; }
         public Knapsack()
         {
             Items = new List<Item>();

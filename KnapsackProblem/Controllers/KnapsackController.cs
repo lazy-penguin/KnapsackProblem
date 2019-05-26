@@ -1,32 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using KnapsackProblem.Models;
-using KnapsackProblem.Models.Managers;
+using DataManagers;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace KnapsackProblem.Controllers
 {
     public class KnapsackController : Controller
     {
-        KnapsackContext Context;
+        private readonly KnapsackContext Context;
         public KnapsackController(KnapsackContext context)
         {
             Context = context;
         }
-        public IActionResult Index()
+
+        public IActionResult Stop(int id)
         {
-            return View(Context.Items.ToList());
+            TaskController.Interrupt(id);
+            return RedirectToAction("Tasks");
         }
 
         public IActionResult Task(int id)
         {
             var task = Context.Tasks.Find(id);
-            var items = TaskManager.GetItems(id, Context);
             ViewBag.Task = task;
-            return View(items);
+            var table = JsonConvert.DeserializeObject<int[,]>(task.Solve.Table);
+            ViewBag.Table = table;
+            return View();
         }
 
+        [HttpGet]
         public IActionResult Tasks()
         {
             return View(Context.Tasks.ToList());
@@ -36,17 +39,28 @@ namespace KnapsackProblem.Controllers
         public IActionResult New(int id)
         {
             ViewBag.Item = id;
-            List<Item> itemList = new List<Item>();
-            itemList.Add(new Item { Weight = 4, Value = 3 });
-            itemList.Add(new Item { Weight = 4, Value = 3 });
+            var itemList = new List<Item>
+            {
+                new Item { Weight = 4, Value = 3 },
+                new Item { Weight = 4, Value = 3 },
+                new Item { Weight = 4, Value = 3 },
+                new Item { Weight = 4, Value = 3 },
+                new Item { Weight = 4, Value = 3 }
+            };
             return View(itemList);
+        }
+
+        public IActionResult Start()
+        {
+            TaskController.FindUnfinished(Context);
+            return RedirectToAction("New");
         }
 
         [HttpPost]
         public IActionResult New(KnapsackTask task, List<Item> itemList)
         {
-            TaskManager.New(task, Context, itemList);
-            return View("Tasks", Context.Tasks.ToList());
+            TaskController.Start(Context, task, itemList);
+            return RedirectToAction("Tasks");
         }
     }
 }
