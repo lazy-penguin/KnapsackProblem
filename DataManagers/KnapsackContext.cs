@@ -16,7 +16,7 @@ namespace DataManagers
         public KnapsackContext(DbContextOptions<KnapsackContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
     }
 }

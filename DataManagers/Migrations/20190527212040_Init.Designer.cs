@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataManagers.Migrations
 {
     [DbContext(typeof(KnapsackContext))]
-    [Migration("20190525073321_remove attribute in Knapsacks")]
-    partial class removeattributeinKnapsacks
+    [Migration("20190527212040_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -71,9 +71,9 @@ namespace DataManagers.Migrations
 
                     b.Property<int?>("SolveId");
 
-                    b.Property<bool>("Status");
+                    b.Property<bool?>("Status");
 
-                    b.Property<int>("Time");
+                    b.Property<long>("Time");
 
                     b.HasKey("Id");
 
@@ -91,7 +91,11 @@ namespace DataManagers.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("K");
+
                     b.Property<string>("Table");
+
+                    b.Property<int>("W");
 
                     b.HasKey("Id");
 

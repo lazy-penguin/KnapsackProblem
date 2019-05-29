@@ -5,7 +5,6 @@
 
 <!DOCTYPE html>
 <html>
-
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -14,13 +13,13 @@
 
 <body class="container">
     <h4 style="color:dimgray;">Для оформления задачи заполните следующие поля:</h4><br>
-    <td><a href="~/Knapsack/Tasks">Все задачи</a></td><br />
+    <a href="~/Knapsack/Tasks">Все задачи</a><br />
 
     <form method="post">
         <h6>Название:</h6>
-        <input type="text" name="Name" class="validate" />
+        <input required type="text" name="Name" class="validate" />
         <h6>Вместимость рюкзака:</h6>
-        <input type="number" name="MaxValue" class="validate" min="1" value="5" />
+        <input required type="number" name="MaxValue" class="validate" min="1" value="5" />
 
         <table class="highlight">
             @for (int i = 0; i < Model.Count(); i++)
@@ -31,21 +30,24 @@
                     </td>
                     <td>
                         <h6>Вес:</h6>
-                        <input type="number" name="[@i].Weight" class="validate" size="3" min="0" value="@(i+1)" />
+                        <input required type="number" name="[@i].Weight" class="validate" size="3" min="0" value="@(i+1)" />
                     </td>
                     <td>
                         <h6>Стоимость:</h6>
-                        <input type="number" name="[@i].Value" class="validate" size="3" min="0" value="@(i+1)" />
+                        <input required type="number" name="[@i].Value" class="validate" size="3" min="0" value="@(i+1)" />
                     </td>
                 </tr>
 
             }
             <tr>
                 <td>
-                    <input class="waves-effect grey lighten-1 btn-small" type="button" value="Добавить" />
+                    <a href="~/Knapsack/New?i=@(Model.Count()+1)">Добавить</a><br />
                 </td>
                 <td>
-                    <input class="waves-effect grey lighten-1 btn-small" type="button" value="Убрать" />
+                    @if(Model.Count() > 1)
+                    {
+                        <a href="~/Knapsack/New?i=@(Model.Count()-1)">Убрать</a><br />
+                    }
                 </td>
             </tr>
         </table>

@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DataManagers.Migrations
 {
-    public partial class removeattributeinKnapsacks : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,7 +26,9 @@ namespace DataManagers.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Table = table.Column<string>(nullable: true)
+                    Table = table.Column<string>(nullable: true),
+                    W = table.Column<int>(nullable: false),
+                    K = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,8 +44,8 @@ namespace DataManagers.Migrations
                     Name = table.Column<string>(nullable: false),
                     Percent = table.Column<int>(nullable: false),
                     MaxValue = table.Column<int>(nullable: false),
-                    Time = table.Column<int>(nullable: false),
-                    Status = table.Column<bool>(nullable: false),
+                    Time = table.Column<long>(nullable: false),
+                    Status = table.Column<bool>(nullable: true),
                     KnapsackId = table.Column<int>(nullable: false),
                     SolveId = table.Column<int>(nullable: true)
                 },

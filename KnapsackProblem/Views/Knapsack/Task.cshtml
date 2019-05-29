@@ -33,7 +33,20 @@
     </table>
 
     <h4 style="color:dimgray;">Решение:</h4>
+    @if (ViewBag.Task.Status == true)
+    {
+        <h6>Статус: Выполнено</h6>
+    }
+    else if (ViewBag.Task.Status == false)
+    {
+        <h6>Статус: В процессе</h6>
+    }
+    else
+    {
+        <h6>Статус: Остановлен</h6>
+    }
     <h6>Максимальная стоимость: @ViewBag.Task.MaxValue</h6>
+    <h6>Затрачено времени: @ViewBag.Task.Time секунд</h6>
     <h6>Таблица:</h6>
     <table class="highlight">
         @for (int i = 0; i <= ViewBag.Task.Knapsack.Capacity; i++)

@@ -1,44 +1,48 @@
 ﻿using DataManagers;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-namespace KnapsackProblem.Controllers
+namespace KnapsackProblem.Utils
 {
     public class KnapsackProblemSolver
     {
-        public List<Item> Items { get; set; }
+        public List<Item> Items { private get; set; }
         public KnapsackTask Task { get; private set; }
         public KnapsackContext Context { get; set; }
         public Solve Solve { get; set; }
         public List<Item> PickedItems { get; private set; }
 
+        public CancellationToken Token { private get; set; }
         private int N, W;
 
-        public void InitContext()
+        public void Start()
         {
-            if (Context == null)
-                return;
-
-            var optionsBuilder = new DbContextOptionsBuilder<KnapsackContext>();
-            optionsBuilder.UseLazyLoadingProxies().UseNpgsql(Context.Database.GetDbConnection().ConnectionString);
-            Context = new KnapsackContext(optionsBuilder.Options);
+            try
+            {
+                DynamicSolve();
+            }
+            finally
+            {
+                if (Context != null)
+                    Context.Dispose();
+            }
         }
 
         public void InitTask(int id)
         {
             var task = Context.Tasks.Find(id);
             Task = task;
+            Task.Status = false;
             Solve = task.Solve;
             Items = task.Items.ToList();
         }
 
         public int CreateNewTask(KnapsackTask task)
         {
-            InitContext();
             Task = TaskManager.New(task, Context, Items);
             return Task.Id;
         }
@@ -57,37 +61,44 @@ namespace KnapsackProblem.Controllers
             }
         }
 
-        private void SaveTable(int[,] table, int k, int w)
+        private void SaveTable(Stopwatch timer, long prevTime, int[,] table, int k, int w)
         {
             string serializedTable = JsonConvert.SerializeObject(table);
             Solve.Table = serializedTable;
             Solve.K = k;
             Solve.W = w;
 
+            Task.Time = prevTime + timer.ElapsedMilliseconds/1000;
             Task.Percent += (int)((1.0 / (N * W)) * 100);
             Context.SaveChanges();
             Thread.Sleep(2000);
         }
 
-        public void DynamicSolve(CancellationToken token)
+        public void DynamicSolve()
         {
+            var timer = Stopwatch.StartNew();
             N = Items.Count();
             W = Task.Knapsack.Capacity;
-            var table = new int[N + 1, W + 1];
+            int[,] table; 
             int k0, w0;
+            long prevTime;
 
             if (Solve == null)
             {
+                table = new int[N+1,W+1];
                 Solve = new Solve { KnapsackTask = Task };
                 Context.Solves.Add(Solve);
                 Context.SaveChanges();
                 k0 = 1;
                 w0 = 1;
+                prevTime = 0;
             }
             else
             {
+                table = JsonConvert.DeserializeObject<int[,]>(Task.Solve.Table);
                 k0 = Solve.K;
-                w0 = Solve.W;
+                w0 = Solve.W + 1;
+                prevTime = Task.Time;
             }
 
             for (int k = k0; k <= N; k++)
@@ -95,21 +106,20 @@ namespace KnapsackProblem.Controllers
                 for(int w = w0; w <= W; w++)
                 {
 
-                    if (token.IsCancellationRequested)
-                    {
-                        Context.Dispose();
+                    if (Token.IsCancellationRequested)
                         return;
-                    }
 
                     if (w >= Items[k - 1].Weight)
                         table[k, w] = Math.Max(table[k - 1, w], table[k - 1, w - Items[k - 1].Weight] + Items[k - 1].Value);
                     else
                         table[k, w] = table[k - 1, w];
 
-                    SaveTable(table, k, w);
+                    SaveTable(timer, prevTime, table, k, w);
                 }
             }
 
+            timer.Stop();
+            Task.Time = timer.ElapsedMilliseconds / 1000;
             Task.MaxValue = table[N, W];
 
             PickedItems = new List<Item>();
@@ -119,7 +129,6 @@ namespace KnapsackProblem.Controllers
             Task.Percent = 100;
             Task.Status = true;
             Context.SaveChanges();
-            Context.Dispose();
         }
     }
 }

@@ -5,17 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\Managers\**" />
-    <Content Remove="Models\Managers\**" />
-    <EmbeddedResource Remove="Models\Managers\**" />
-    <None Remove="Models\Managers\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Models\Item.cs" />
-    <Compile Remove="Models\Knapsack.cs" />
-    <Compile Remove="Models\KnapsackContext.cs" />
-    <Compile Remove="Models\Task.cs" />
+    <Compile Remove="Models\**" />
+    <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,10 +21,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>

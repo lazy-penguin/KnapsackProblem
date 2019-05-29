@@ -21,10 +21,9 @@ namespace DataManagers
         public int MaxValue { get; set; }
 
         [Required]
-        public int Time { get; set; }
+        public long Time { get; set; }
 
-        [Required]
-        public Boolean Status { get; set; }
+        public bool? Status { get; set; }
 
         [Required]
         public int KnapsackId { get; set; }

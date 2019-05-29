@@ -69,9 +69,9 @@ namespace DataManagers.Migrations
 
                     b.Property<int?>("SolveId");
 
-                    b.Property<bool>("Status");
+                    b.Property<bool?>("Status");
 
-                    b.Property<int>("Time");
+                    b.Property<long>("Time");
 
                     b.HasKey("Id");
 
