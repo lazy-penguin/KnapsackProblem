@@ -47,7 +47,7 @@ namespace KnapsackProblem.Controllers
         [HttpGet]
         public IActionResult Tasks()
         {
-            return View(Context.Tasks.ToList());
+            return View(Context.Tasks.OrderBy(e => e.Status.GetValueOrDefault() ? 1 : 0).ToList());
         }
 
         [HttpGet]
